@@ -1,4 +1,4 @@
-package com.LeVanMinh.ecom_application;
+package com.LeVanMinh.ecom;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

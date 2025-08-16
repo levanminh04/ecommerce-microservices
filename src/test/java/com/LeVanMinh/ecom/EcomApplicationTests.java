@@ -1,4 +1,4 @@
-package com.LeVanMinh.ecom_application;
+package com.LeVanMinh.ecom;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
