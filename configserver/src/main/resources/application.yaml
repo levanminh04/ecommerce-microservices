@@ -1,0 +1,19 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/levanminh04/spring-cloud-config.git
+
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: file:///C:\Users\FAISAL\Desktop\courses\embarkx\Microservices\ecom-microservices\configserver\src\main\resources\config
+
+#   test/dev thì dùng native cho tiện
