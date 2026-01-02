@@ -75,4 +75,9 @@ public class ProductService {
                 .map(this::mapToProductResponse)
                 .collect(Collectors.toList());
     }
+
+    public Optional<ProductResponse> getProductDetail(Long Id) {
+        return productRepository.searchProductDetail(Id)
+                .map(this::mapToProductResponse);
+    }
 }

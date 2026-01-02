@@ -1,46 +1,5 @@
-server:
-  port: 8082
-
 spring:
   application:
     name: user-service
-
-
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/userdb
-      database: userdb
-#      uri: mongodb+srv://levminh04:YpKyANcOQHCwQ5zz@userdb.eu0odxa.mongodb.net/?retryWrites=true&w=majority&appName=userdb
-#      database: userdb
-
-
-
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/userdb
-#    username: levanminh
-#    password: 123456
-#
-#  jpa:
-#    database: POSTGRESQL
-#    hibernate:
-#      ddl-auto: update
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    show-sql: true
-
-#  h2:
-#    console:
-#      enabled: true
-#  datasource:
-#    url: jdbc:h2:mem:test
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: create
-
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+  config:
+    import: optional:configserver:http://localhost:8888
