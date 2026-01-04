@@ -1,0 +1,60 @@
+#spring:
+#  cloud:
+#    gateway:
+#      server:
+#        webflux:
+#          routes:
+#            - id: product-service
+#              uri: lb://PRODUCT-SERVICE
+#              predicates:
+#                - Path= /api/products/**
+##              filters:
+##                - "RewritePath=/products(?<segment>/?.*),/api/products${segment}"
+#            - id: user-service
+#              uri: lb://USER-SERVICE
+#              predicates:
+#                - Path= /api/users/**
+##              filters:
+##                - "RewritePath=/users(?<segment>/?.*),/api/users${segment}"
+#            - id: order-service
+#              uri: lb://ORDER-SERVICE
+#              predicates:
+#                - Path=/api/orders/**, /api/cart/**
+#            - id: eureka-server
+#              uri: http://localhost:8761
+#              predicates:
+#                - Path=/eureka/main
+#              filters:
+#                - SetPath=/
+#            - id: eureka-resource
+#              uri: http://localhost:8761
+#              predicates:
+#                - Path=/eureka/**
+
+# Predicates là các điều kiện mà một Request HTTP phải thỏa mãn để Gateway thực hiện một hành động nào đó (thường là định tuyến đến service tương ứng)
+# 1 route = 1 rule. Khi một HTTP request đến, Gateway sẽ duyệt qua các route và chọn route đầu tiên có predicate match với request đó.
+
+
+server:
+  port: 8080
+
+#logging:
+#  level:
+#    root: info
+#    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+#    org.springframework.cloud.gateway: TRACE
+
+
+
+#spring.cloud.gateway.routes[0].id=product-service
+#spring.cloud.gateway.routes[0].uri=http://localhost:8081
+#spring.cloud.gateway.routes[0].predicates[0]=Path=/api/products/**
+#
+#spring.cloud.gateway.routes[1].id=user-service
+#spring.cloud.gateway.routes[1].uri=http://localhost:8082
+#spring.cloud.gateway.routes[1].predicates[0]=Path=/api/users/**
+#
+#spring.cloud.gateway.routes[2].id=order-service
+#spring.cloud.gateway.routes[2].uri=http://localhost:8083
+#spring.cloud.gateway.routes[2].predicates[0]=Path=/api/orders/**
+#spring.cloud.gateway.routes[2].predicates[1]=Path=/api/cart/**

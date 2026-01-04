@@ -27,7 +27,7 @@ public class UserServiceClientConfig {
     public UserServiceClient uerRestClientInterface(RestClient.Builder restClientBuilder){
 
         RestClient restClient = restClientBuilder
-                .baseUrl("http://user-service")
+                .baseUrl("http://user-service")   // thông thường http:// → OS sẽ gọi đến máy chủ DNS để tìm IP nhưng do đã có @LoadBalanced chặn lại làm interceptor và chuyển hướng đến DiscoveryClient
                 .defaultStatusHandler(HttpStatusCode::is4xxClientError,
                         ((request, response) -> Optional.empty()))
                 .build();
