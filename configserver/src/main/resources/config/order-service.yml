@@ -44,7 +44,41 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*"  # Mở tất cả các cổng giám sát (health, info, beans, metrics...) qua HTTP
+  endpoint:
+    health:
+      show-details: always # Luôn hiển thị chi tiết trạng thái sức khỏe (thay vì chỉ hiện "UP")
+  health:
+    circuitbreakers: # Tích hợp trạng thái của Circuit Breaker vào hệ thống Health Check
+      enabled: true
 
 app:
   message: "okkkkkkkkkkkkk"
+
+
+
+# Circuit Breaker
+resilience4j:
+  circuitbreaker:
+    instances:
+      productService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        slidingWindowType: count_based
+
+
+#registerHealthIndicator	                    Đưa trạng thái của Circuit Breaker này vào trang /actuator/health.
+#slidingWindowSize: 10	                        Theo dõi kết quả của 10 cuộc gọi gần nhất để tính toán tỷ lệ lỗi.
+#minimumNumberOfCalls: 5	                    Phải có ít nhất 5 cuộc gọi (SUCC or FAIL) thì mới bắt đầu tính toán để ngắt mạch.
+#failureRateThreshold: 50	                    Nếu tỉ lệ lỗi >= 50%, mạch sẽ chuyển sang trạng thái OPEN (Ngắt).
+#waitDurationInOpenState: 10s	                Sau khi ngắt, nó sẽ chờ 10 giây trước khi thử chuyển sang trạng thái Half-Open.
+#permittedNumberOfCallsInHalfOpenState: 3	    Ở trạng thái Half-Open, cho phép 3 cuộc gọi để kiểm tra hệ thống đã ổn định chưa.
+#automaticTransitionFromOpenToHalfOpenEnabled	Tự động chuyển từ OPEN sang Half-Open mà không cần có request mới đến.
+
+
+

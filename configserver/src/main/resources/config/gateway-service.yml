@@ -37,7 +37,33 @@
 
 server:
   port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Mở tất cả các cổng giám sát (health, info, beans, metrics...) qua HTTP
+  endpoint:
+    health:
+      show-details: always # Luôn hiển thị chi tiết trạng thái sức khỏe (thay vì chỉ hiện "UP")
+  health:
+    circuitbreakers: # Tích hợp trạng thái của Circuit Breaker vào hệ thống Health Check
+      enabled: true
 
+
+
+# Circuit Breaker
+resilience4j:
+  circuitbreaker:
+    instances:
+      ecomBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        slidingWindowType: count_based
 #logging:
 #  level:
 #    root: info
