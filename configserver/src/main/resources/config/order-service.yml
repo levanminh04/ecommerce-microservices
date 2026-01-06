@@ -70,7 +70,17 @@ resilience4j:
         failureRateThreshold: 50
         automaticTransitionFromOpenToHalfOpenEnabled: true
         slidingWindowType: count_based
-
+  retry:
+    instances:
+      retryBreaker:
+        maxAttempts: 5
+        waitDuration: 5s
+  ratelimiter:
+    instances:
+      rateBreaker:
+        timeout-duration: 0
+        limit-refresh-period: 4s
+        limit-for-period: 2
 
 #registerHealthIndicator	                    Đưa trạng thái của Circuit Breaker này vào trang /actuator/health.
 #slidingWindowSize: 10	                        Theo dõi kết quả của 10 cuộc gọi gần nhất để tính toán tỷ lệ lỗi.

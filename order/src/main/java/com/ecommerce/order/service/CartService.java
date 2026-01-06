@@ -9,6 +9,7 @@ import com.ecommerce.order.model.CartItem;
 
 import com.ecommerce.order.repository.CartItemRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class CartService {
     private final ProductServiceClient productServiceClient;
 
     private final UserServiceClient userServiceClient;
-
+    int attempt = 0;
 
 //    Annotation này hoạt động như 1 Proxy bao quanh phương thức, Mỗi khi phương thức này được gọi,
 //    Resilience4j sẽ ghi nhận kết quả: thành công hay thất bại (ném ra Exception).
@@ -34,10 +35,11 @@ public class CartService {
 //    Nếu trả về null hoặc false: Resilience4j coi là một Success. Mạch sẽ không tính đây là lỗi vì về mặt kỹ thuật, hàm vẫn chạy xong và trả về giá trị.
 //    Nếu Throw Exception: Mặc định, bất kỳ ngoại lệ nào (RuntimeException, Exception...) được ném ra khỏi hàm addToCart mà không được catch lại bên trong hàm đó sẽ được tính là Thất bại (Fail).
 //    Dù lỗi phát sinh từ productServiceClient, userServiceClient, hay thậm chí là lỗi ở dòng cartItemRepository.save(), thì Resilience4j đều tính chung vào một "giỏ" lỗi.
-    @CircuitBreaker(name = "productService", fallbackMethod = "addToCartFallBack") // đây là circuit breaker ở mức method (cụ thể trong 1 service luôn) tuy nhiên đây không phải best practice,  nên citcuit breaker tại gateway
+//    @CircuitBreaker(name = "productService", fallbackMethod = "addToCartFallBack") // đây là circuit breaker ở mức method (cụ thể trong 1 service luôn) tuy nhiên đây không phải best practice,  nên citcuit breaker tại gateway
+    @Retry(name = "retryBreaker", fallbackMethod = "addToCartFallBack")
     public boolean addToCart(String userId, CartItemRequest request) {
 
-
+        System.out.println("ATTEMPT COUNT: " + ++attempt);
         ProductResponse productResponse = productServiceClient.getProductDetails(Long.valueOf(request.getProductId()));
         if (productResponse == null)
             return false;
