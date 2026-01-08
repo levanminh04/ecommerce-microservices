@@ -1,4 +1,4 @@
-package com.ecommerce.order.RabbitMqConfig;
+package com.ecommerce.notification;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -9,7 +9,6 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.amqp.dsl.Amqp;
 
 @Configuration
 public class RabbitMQConfiguration {
@@ -50,34 +49,11 @@ public class RabbitMQConfiguration {
     }
 
 
-//    Khi RabbitAdmin được khởi tạo, (phương thức afterPropertiesSet hoặc initialize). Nó sẽ làm hành động sau:
-//    "Này Spring Context! Hãy liệt kê cho tôi tất cả các Bean có kiểu là Queue, Exchange, và Binding đang có trong bộ nhớ!"
-//    Spring Context đưa cho RabbitAdmin danh sách các bean đã tạo (queue(), topicExchange(),...).
-//    Lúc này, RabbitAdmin dùng cái ConnectionFactory (mà nó nắm giữ) để gọi lên Server RabbitMQ thật
-//    Tham số ConnectionFactory: Khi Spring khởi tạo hàm này, nó tự động tìm  ConnectionFactory (đã được Spring Boot tự cấu hình dựa trên host/port/username/password trong file properties) và ném vào đây.
-//    Đây là chìa khóa để mở cửa vào RabbitMQ Server.
-    @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory){
-        RabbitAdmin admin = new RabbitAdmin(connectionFactory);
-        admin.setAutoStartup(true);
-        return admin;
-    }
-
     @Bean // RabbitMQ chỉ hiểu byte (mảng byte). Java dùng Object (ví dụ OrderDTO).
     public MessageConverter messageConverter(){
         return new Jackson2JsonMessageConverter();
     }
 
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter());
-        template.setExchange(exchangeName);
-        return template;
-    }
-    // RabbitTemplate không phải là một kết nối. Nó là một Facade Pattern (Mặt tiền) che giấu sự phức tạp của việc quản lý kết nối, kênh (channel) và gửi tin.
-    //
-    //
 
 
 }

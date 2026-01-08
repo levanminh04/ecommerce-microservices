@@ -9,18 +9,18 @@ spring:
     port: 5672
     username: guest
     password: guest
-#  cloud:
-#    config:
-#      server:
-#        git:
-#          uri: https://github.com/levanminh04/spring-cloud-config.git
+  #  cloud:
+  #    config:
+  #      server:
+  #        git:
+  #          uri: https://github.com/levanminh04/spring-cloud-config.git
   profiles:
     active: native
   cloud:
     config:
       server:
         native:
-#          search-locations: file:///file:/D:/Project/ecom-application/configserver/src/main/resources/config/
+          #          search-locations: file:///file:/D:/Project/ecom-application/configserver/src/main/resources/config/
           search-locations: file:/D:/Project/ecom-application/configserver/src/main/resources/config/
 #   test/dev thì dùng native cho tiện
 
