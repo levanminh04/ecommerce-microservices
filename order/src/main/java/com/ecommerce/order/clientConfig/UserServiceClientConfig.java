@@ -1,13 +1,11 @@
-package com.ecommerce.order.config;
+package com.ecommerce.order.clientConfig;
 
 import com.ecommerce.order.client.UserServiceClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import java.util.Optional;

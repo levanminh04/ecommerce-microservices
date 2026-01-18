@@ -43,6 +43,23 @@ services:
       - backend
     restart: unless-stopped
 
+  keycloak:
+    container_name: keycloak-ecom-app
+    image: quay.io/keycloak/keycloak:26.0.0
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+      - backend
+    command:
+      - "start-dev"
+    volumes:
+      - keycloak_data:/opt/keycloak/data/
+    restart: unless-stopped
+
+
 networks:
   backend:
     driver: bridge
@@ -50,3 +67,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  keycloak_data:

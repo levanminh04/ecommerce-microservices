@@ -8,6 +8,7 @@ public class ApigatewayApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApigatewayApplication.class, args);
+		System.out.println("API_GATEWAY_STARTED");
 	}
 
 }

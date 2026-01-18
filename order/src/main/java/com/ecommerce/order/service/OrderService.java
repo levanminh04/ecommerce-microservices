@@ -9,6 +9,7 @@ import io.netty.util.concurrent.OrderedEventExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,16 +23,17 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
-    private final RabbitTemplate rabbitTemplate;
-
-    @Value("${rabbitmq.queue.name}")
-    private String queueName;
-
-    @Value("${rabbitmq.exchange.name}")
-    private String exchangeName;
-
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
+//    private final RabbitTemplate rabbitTemplate;
+//
+//    @Value("${rabbitmq.queue.name}")
+//    private String queueName;
+//
+//    @Value("${rabbitmq.exchange.name}")
+//    private String exchangeName;
+//
+//    @Value("${rabbitmq.routing.key}")
+//    private String routingKey;
+    private final StreamBridge streamBridge;
 
     public Optional<OrderResponse> createOrder(String userId) {
 //        // Validate for cart items
@@ -83,9 +85,17 @@ public class OrderService {
                 savedOrder.getCreatedAt()
         );
 
-        rabbitTemplate.convertAndSend(exchangeName,
-                                      routingKey,
-                                      event);
+//        rabbitTemplate.convertAndSend(exchangeName,
+//                                      routingKey,
+//                                      event);
+
+        streamBridge.send("createOrder-out-0", event);
+// Trong thực tế phát triển, StreamBridge được sử dụng phổ biến hơn rất nhiều so với Supplier để gửi message.
+// Đây là lý do: Supplier mặc định hoạt động theo cơ chế Polling (định kỳ tự chạy, ví dụ mỗi 1 giây chạy 1 lần).
+// Nó không biết khi nào người dùng gọi API. Để nối API với Supplier, bạn phải dùng các kỹ thuật Reactive phức tạp,
+// làm code trở nên rối rắm không cần thiết.  Nó cho phép bạn gửi message "theo mệnh lệnh" (Imperative).
+// Bạn có thể gọi nó ở bất cứ đâu (Controller, Service) ngay khi bạn cần.
+
         return Optional.of(mapToOrderResponse(savedOrder));
 
 

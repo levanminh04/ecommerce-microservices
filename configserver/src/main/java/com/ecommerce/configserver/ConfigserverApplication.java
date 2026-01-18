@@ -10,6 +10,6 @@ public class ConfigserverApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ConfigserverApplication.class, args);
+		System.out.println("CONFIG_SERVER_STARTED");
 	}
-
 }
