@@ -54,3 +54,14 @@ management:
     web:
       exposure:
         include: "*"
+
+
+# KEYCLOAK
+keycloak:
+  admin:
+    username: levanminh
+    password: 123456
+    server-url: http://localhost:9090
+    realm: eccom-app
+    client-id: admin-cli
+    client-uid: 356e5294-a49d-4370-b206-8c5d003058d0

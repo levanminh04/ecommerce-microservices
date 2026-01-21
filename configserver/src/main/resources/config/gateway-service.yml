@@ -84,3 +84,12 @@ resilience4j:
 #spring.cloud.gateway.routes[2].uri=http://localhost:8083
 #spring.cloud.gateway.routes[2].predicates[0]=Path=/api/orders/**
 #spring.cloud.gateway.routes[2].predicates[1]=Path=/api/cart/**
+
+
+# SECURITY
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/eccom-app
